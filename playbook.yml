@@ -1,0 +1,60 @@
+---
+
+- hosts: 127.0.0.1
+  connection: local
+  become: yes
+  become_flags: -i
+  vars:
+    app: colab
+    users:
+      - username: "{{app}}"
+        uid: 10000
+        ssh_key: []
+    erlang_version: 19.1
+    elixir_version: v1.3.4
+    nginx_upstreams:
+      - name: "{{app}}"
+        servers:
+          - 127.0.0.1:4000
+    nginx_vhosts:
+      - name: "{{app}}"
+        server_name: _
+        listen: 80
+        extra_parameters: |
+          location / { proxy_pass http://{{app}}; }
+  roles:
+    - ANXS.postgresql
+    - singleplatform-eng.nginx
+    - singleplatform-eng.users
+    - ohr486.elixir
+  tasks:
+    - name: Install package dependencies
+      package: name={{item}}
+      with_items:
+        - npm
+
+    - name: Create app directory
+      file:
+        path: "/srv/{{app}}"
+        state: directory
+        owner: "{{app}}"
+        group: "{{app}}"
+
+    - block:
+        - name: Checkout git repo
+          git:
+            repo: "https://github.com/ahoglund/{{app}}.git"
+            dest: "/srv/{{app}}"
+
+        - name: Install app dependencies
+          shell: yes | mix deps.get chdir="/srv/{{app}}"
+
+        - name: Install app node dependencies
+          npm: path="/srv/{{app}}"
+
+        - name: Create database
+          shell: yes | mix ecto.create chdir="/srv/{{app}}"
+
+        #- name: Run database migration
+        #  shell: mix ecto.migrate chdir="/srv/{{app}}"
+      become_user: "{{app}}"
