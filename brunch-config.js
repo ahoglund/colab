@@ -3,27 +3,9 @@ exports.config = {
   files: {
     javascripts: {
       joinTo: "js/app.js"
-
-      // To use a separate vendor.js bundle, specify two files path
-      // http://brunch.io/docs/config#-files-
-      // joinTo: {
-      //  "js/app.js": /^(web\/static\/js)/,
-      //  "js/vendor.js": /^(web\/static\/vendor)|(deps)/
-      // }
-      //
-      // To change the order of concatenation of files, explicitly mention here
-      // order: {
-      //   before: [
-      //     "web/static/vendor/js/jquery-2.1.1.js",
-      //     "web/static/vendor/js/bootstrap.min.js"
-      //   ]
-      // }
     },
     stylesheets: {
-      joinTo: "css/app.css",
-      order: {
-        after: ["web/static/css/app.css"] // concat app.css last
-      }
+      joinTo: "css/app.css"
     },
     templates: {
       joinTo: "js/app.js"
@@ -42,7 +24,8 @@ exports.config = {
     // Dependencies and current project directories to watch
     watched: [
       "web/static",
-      "test/static"
+      "test/static",
+      "web/elm"
     ],
 
     // Where to compile files to
@@ -51,6 +34,11 @@ exports.config = {
 
   // Configure your plugins
   plugins: {
+    elmBrunch: {
+      elmFolder: "web/elm",
+      mainModules: ["Main.elm"],
+      outputFolder: "../static/vendor/js"
+    },
     babel: {
       // Do not use ES6 compiler in vendor code
       ignore: [/web\/static\/vendor/]
@@ -64,6 +52,9 @@ exports.config = {
   },
 
   npm: {
-    enabled: true
+    enabled: true,
+    // Whitelist the npm deps to be pulled in as front-end assets.
+    // All other deps in package.json will be excluded from the bundle.
+    whitelist: ["phoenix", "phoenix_html"]
   }
 };

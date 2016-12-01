@@ -1,0 +1,7 @@
+<h1>My Labs</h1>
+<%= for lab <- @labs do %>
+  <p><%= lab.name %></p>
+<% end %>
+
+
+

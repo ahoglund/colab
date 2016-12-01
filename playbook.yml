@@ -46,8 +46,11 @@
             repo: "https://github.com/ahoglund/{{app}}.git"
             dest: "/srv/{{app}}"
 
-        - name: Install app node dependencies
+        - name: Install hex
           shell: mix local.hex --force chdir="/srv/{{app}}"
+
+        - name: Install rebar
+          shell: mix local.rebar --force chdir="/srv/{{app}}"
 
         - name: Install app dependencies
           shell: mix deps.get chdir="/srv/{{app}}"
@@ -55,8 +58,8 @@
         - name: Create database
           shell: mix ecto.create chdir="/srv/{{app}}"
 
-        - name: Run database migration
-          shell: mix ecto.migrate chdir="/srv/{{app}}"
+        #- name: Run database migration
+        #  shell: mix ecto.migrate chdir="/srv/{{app}}"
 
         - name: Install app node dependencies
           shell: npm install chdir="/srv/{{app}}"

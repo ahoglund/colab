@@ -34,6 +34,7 @@ defmodule Colab.Web do
       import Ecto
       import Ecto.Query
 
+      import Colab.Auth, only: [authenticate_user: 2]
       import Colab.Router.Helpers
       import Colab.Gettext
     end
@@ -58,6 +59,7 @@ defmodule Colab.Web do
   def router do
     quote do
       use Phoenix.Router
+      import Colab.Auth, only: [authenticate_user: 2]
     end
   end
 

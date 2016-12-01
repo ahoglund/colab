@@ -26,6 +26,7 @@ defmodule Colab.ConnCase do
       import Ecto.Query
 
       import Colab.Router.Helpers
+      import Colab.TestHelpers
 
       # The default endpoint for testing
       @endpoint Colab.Endpoint
