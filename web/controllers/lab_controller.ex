@@ -17,6 +17,10 @@ defmodule Colab.LabController do
     render conn, "new.html"
   end
 
+  def show(conn, %{ "id" => id }) do
+    lab = Repo.find(Lab, id)
+  end
+
   defp user_labs(user) do
     assoc(user, :labs)
   end
