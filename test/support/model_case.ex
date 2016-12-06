@@ -21,6 +21,7 @@ defmodule Colab.ModelCase do
       import Ecto
       import Ecto.Changeset
       import Ecto.Query
+      import Colab.TestHelpers
       import Colab.ModelCase
     end
   end
