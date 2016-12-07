@@ -7,29 +7,61 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Hello Colab!</title>
+    <title>Colab</title>
     <link rel="stylesheet" href="<%= static_path(@conn, "/css/app.css") %>">
   </head>
 
   <body>
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+      <div class="container">
+        <div class="navbar-header">
+          <a class="navbar-brand" href="/">CoLab</a>
+        </div>
+        <div id="navbar" class="navbar-collapse collapse">
+          <%= if @current_user do %>
+            <ul class="nav navbar-nav">
+              <li><%= link "My Labs", to: lab_path(@conn, :index) %></li>
+            </ul>
+            <div class="navbar-form navbar-right">
+              <%= link "Log Out", to: session_path(@conn, :delete, @current_user), method: "delete", class: "btn btn-primary" %>
+            </div>
+            <ul class="nav navbar-nav navbar-right">
+              <li class="dropdown">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><%= @current_user.username %>&nbsp;<span class="caret"></span></a>
+                <ul class="dropdown-menu">
+                  <li><%= link @current_user.name, to: user_path(@conn, :show, @current_user.id) %></li>
+                </ul>
+              </li>
+            </ul>
+          <% else %>
+            <div class="navbar-form navbar-right">
+              <%= link "Register", to: user_path(@conn, :new), class: "btn btn-primary" %>
+              <%= link "Login", to: session_path(@conn, :new), class: "btn btn-primary" %>
+            </div>
+          <% end %>
+        </div><!--/.navbar-collapse -->
+      </div>
+    </nav>
+
     <div class="container">
-      <header class="header">
-        <nav role="navigation">
-          <ul class="nav nav-pills pull-right">
-            <li><a href="http://www.phoenixframework.org/docs">Get Started</a></li>
-          </ul>
-        </nav>
-        <span class="logo"></span>
-      </header>
-
-      <p class="alert alert-info" role="alert"><%= get_flash(@conn, :info) %></p>
-      <p class="alert alert-danger" role="alert"><%= get_flash(@conn, :error) %></p>
-
-      <main role="main">
-        <%= render @view_module, @view_template, assigns %>
-      </main>
-
+      <!-- Example row of columns -->
+      <div class="row">
+        <div class="col-md-12">
+          <p class="alert alert-info" role="alert"><%= get_flash(@conn, :info) %></p>
+          <p class="alert alert-danger" role="alert"><%= get_flash(@conn, :error) %></p>
+        </div>
+        <div class="col-md-12">
+          <main role="main">
+            <%= render @view_module, @view_template, assigns %>
+          </main></div>
+      </div>
     </div> <!-- /container -->
+    <footer class="footer">
+      <div class="container">
+        <p class="text-muted">&copy; 2016 Colab, Inc.</p>
+      </div>
+    </footer>
+    <script>window.userToken = "<%= assigns[:user_token] %>"</script>
     <script src="<%= static_path(@conn, "/js/app.js") %>"></script>
   </body>
 </html>

@@ -1,7 +1,9 @@
 defmodule Colab.UserController do
   use Colab.Web, :controller
   alias Colab.User
+
   plug :authenticate_user when action in [:index, :show]
+
   def index(conn, _params) do
     users = Repo.all(User)
     render conn, "index.html", users: users
@@ -24,7 +26,7 @@ defmodule Colab.UserController do
         conn
         |> Colab.Auth.login(user)
         |> put_flash(:info, "#{user.name} created.")
-        |> redirect(to: user_path(conn, :index))
+        |> redirect(to: page_path(conn, :index))
       {:error, changeset} ->
         conn
         |> put_flash(:error, "Oops! Check the errors below:")

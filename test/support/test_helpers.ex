@@ -15,7 +15,7 @@ defmodule Colab.TestHelpers do
 
   def insert_lab(user, attrs \\ %{}) do
     user
-    |> Ecto.build_assoc(:labs, user)
+    |> Ecto.build_assoc(:labs, attrs)
     |> Repo.insert!()
   end
 end

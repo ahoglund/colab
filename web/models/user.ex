@@ -14,7 +14,7 @@ defmodule Colab.User do
   @doc """
   Builds a changeset based on the `struct` and `params`.
   """
-  def changeset(model, params \\ :empty) do
+  def changeset(model, params \\ %{}) do
     model
     |> cast(params, ~w(name username), [])
     |> validate_length(:username, min: 1, max: 30)

@@ -24,12 +24,12 @@ defmodule Colab.LabControllerTest do
   @tag login_as: "lab-user"
   test "lists a user's labs", %{ conn: conn, user: user } do
     user_lab   = insert_lab(user, name: "test lab")
-    #user_lab_2 = insert_lab(insert_user(username: "another-user"), name: "test lab 2")
+    user_lab_2 = insert_lab(insert_user(username: "another-user"), name: "test lab 2")
 
     conn = get conn, lab_path(conn, :index)
 
     assert html_response(conn, 200) =~ ~r/Labs/
     assert String.contains?(conn.resp_body, user_lab.name)
-    #refute String.contains?(conn.resp_body, user_lab_2.name)
+    refute String.contains?(conn.resp_body, user_lab_2.name)
   end
 end
