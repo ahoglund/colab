@@ -18,14 +18,16 @@ defmodule Colab.Router do
     pipe_through :browser
     get "/", PageController, :index
     resources "/sessions",  SessionController, only: [:new, :create, :delete]
+    resources "/users", UserController, only: [:new, :create]
     get "/login", SessionController, :new
     get "/logout", SessionController, :delete
     get "/signup", UserController, :new
-    resources "/users", UserController, only: [:new, :create]
+  end
 
+  scope "/", Colab do
     pipe_through [:browser, :authenticate_user]
     resources "/labs", LabController
-    resources "/users", UserController, only: [:index, :show, :edit, :update, :delete]
+    resources "/users", UserController, only: [:show]
   end
 
   # Other scopes may use custom stacks.

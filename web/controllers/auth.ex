@@ -46,6 +46,7 @@ defmodule Colab.Auth do
   import Phoenix.Controller
   alias Colab.Router.Helpers
 
+
   def authenticate_user(conn, _opts) do
     if conn.assigns.current_user do
       conn

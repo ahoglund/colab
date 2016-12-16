@@ -16,6 +16,7 @@ defmodule Colab.PageControllerTest do
     conn = get conn, "/"
 
     assert String.contains?(conn.resp_body, "Log Out")
+    assert String.contains?(conn.resp_body, "Profile")
     refute String.contains?(conn.resp_body, "Login")
   end
 end
