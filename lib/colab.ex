@@ -11,7 +11,7 @@ defmodule Colab do
       # Start the Ecto repository
       supervisor(Colab.Repo, []),
       # Start the endpoint when the application starts
-      supervisor(Colab.Endpoint, []),
+      supervisor(ColabWeb.Endpoint, []),
       # Start your own worker by calling: Colab.Worker.start_link(arg1, arg2, arg3)
       # worker(Colab.Worker, [arg1, arg2, arg3]),
     ]
@@ -25,7 +25,7 @@ defmodule Colab do
   # Tell Phoenix to update the endpoint configuration
   # whenever the application is updated.
   def config_change(changed, _new, removed) do
-    Colab.Endpoint.config_change(changed, removed)
+    ColabWeb.Endpoint.config_change(changed, removed)
     :ok
   end
 end

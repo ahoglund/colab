@@ -1,5 +1,5 @@
-defmodule Colab.LabControllerTest do
-  use Colab.ConnCase
+defmodule ColabWeb.LabControllerTest do
+  use ColabWeb.ConnCase
 
   setup %{ conn: conn } = config do
     if username = config[:login_as] do

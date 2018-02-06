@@ -1,3 +1,3 @@
 defmodule Colab.LayoutViewTest do
-  use Colab.ConnCase, async: true
+  use ColabWeb.ConnCase, async: true
 end

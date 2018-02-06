@@ -1,5 +1,5 @@
 defmodule Colab.PageControllerTest do
-  use Colab.ConnCase
+  use ColabWeb.ConnCase
 
   test "GET /", %{conn: conn} do
     conn = get conn, "/"

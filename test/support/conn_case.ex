@@ -1,4 +1,4 @@
-defmodule Colab.ConnCase do
+defmodule ColabWeb.ConnCase do
   @moduledoc """
   This module defines the test case to be used by
   tests that require setting up a connection.
@@ -25,11 +25,11 @@ defmodule Colab.ConnCase do
       import Ecto.Changeset
       import Ecto.Query
 
-      import Colab.Router.Helpers
+      import ColabWeb.Router.Helpers
       import Colab.TestHelpers
 
       # The default endpoint for testing
-      @endpoint Colab.Endpoint
+      @endpoint ColabWeb.Endpoint
     end
   end
 

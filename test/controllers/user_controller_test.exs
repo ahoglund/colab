@@ -1,5 +1,5 @@
 defmodule Colab.UserControllerTest do
-  use Colab.ConnCase
+  use ColabWeb.ConnCase
 
   test "show.html redirects when logged out", %{conn: conn} do
     user = insert_user

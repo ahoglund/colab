@@ -10,10 +10,10 @@ config :colab,
   ecto_repos: [Colab.Repo]
 
 # Configures the endpoint
-config :colab, Colab.Endpoint,
+config :colab, ColabWeb.Endpoint,
   url: [host: "localhost"],
   secret_key_base: "0+bwG7TtrartUdPIRIn8ICFJt5E3YyQKT8QG/WSN62Pc2AYAdehDJdf/N7czPckR",
-  render_errors: [view: Colab.ErrorView, accepts: ~w(html json)],
+  render_errors: [view: ColabWeb.ErrorView, accepts: ~w(html json)],
   pubsub: [name: Colab.PubSub,
            adapter: Phoenix.PubSub.PG2]
 

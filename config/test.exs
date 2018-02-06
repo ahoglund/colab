@@ -2,7 +2,7 @@ use Mix.Config
 
 # We don't run a server during test. If one is required,
 # you can enable the server option below.
-config :colab, Colab.Endpoint,
+config :colab, ColabWeb.Endpoint,
   http: [port: 4001],
   server: false
 
@@ -12,7 +12,7 @@ config :logger, level: :warn
 # Configure your database
 config :colab, Colab.Repo,
   adapter: Ecto.Adapters.Postgres,
-  username: "postgres",
+  username: "drew",
   password: "postgres",
   database: "colab_test",
   hostname: "localhost",

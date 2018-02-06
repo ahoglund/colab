@@ -1,4 +1,4 @@
-defmodule Colab.ChannelCase do
+defmodule ColabWeb.ChannelCase do
   @moduledoc """
   This module defines the test case to be used by
   channel tests.
@@ -27,7 +27,7 @@ defmodule Colab.ChannelCase do
 
 
       # The default endpoint for testing
-      @endpoint Colab.Endpoint
+      @endpoint ColabWeb.Endpoint
     end
   end
 

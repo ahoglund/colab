@@ -1,11 +1,11 @@
 defmodule Colab.AuthTest do
-  use Colab.ConnCase
+  use ColabWeb.ConnCase
   alias Colab.Auth
 
   setup %{conn: conn} do
     conn =
       conn
-      |> bypass_through(Colab.Router, :browser)
+      |> bypass_through(ColabWeb.Router, :browser)
       |> get("/")
 
     {:ok, %{conn: conn}}
