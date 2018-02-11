@@ -3,9 +3,8 @@ module Main exposing (..)
 import Html exposing (..)
 import Html.Attributes exposing (..)
 import Html.Events exposing (..)
-import Html.App as App
 import Time exposing (Time, second)
-import String
+import String exposing (..)
 import Track exposing (..)
 import Cell exposing (..)
 import Cmds exposing (..)
@@ -23,9 +22,9 @@ import Char
 type alias JamFlags =
   { jam_id : String }
 
-main : Program JamFlags
+main : Program JamFlags Model Msg
 main =
-  App.programWithFlags
+  Html.programWithFlags
     { init          = init
     , subscriptions = subscriptions
     , update        = update
@@ -67,30 +66,30 @@ initModel jamFlags tracks =
 
 jamChannelName : String
 jamChannelName =
-  "jam:room:"
+  "lab:room:"
 
 beatCount : List Int
 beatCount =
-  [1..16]
+  List.range 1 16
 
 type alias Metronome =
   { tick : Int }
 
 decodeMetronomeTick : JD.Decoder Metronome
 decodeMetronomeTick =
-  JD.object1 Metronome
-    ("tick" := JD.int)
+  JD.map Metronome
+    (field "tick" JD.int)
 
 decodeBpm : JD.Decoder Int
 decodeBpm =
-  ("bpm" := JD.int)
+  (field "bpm" JD.int)
 
 decodeCell : JD.Decoder Cell
 decodeCell =
-  JD.object3 Cell
-    ("track_id" := JD.int)
-    ("is_active" := JD.bool)
-    ("id" := JD.int)
+  JD.map3 Cell
+    (field "track_id" JD.int)
+    (field "is_active" JD.bool)
+    (field "id" JD.int)
 
 type Msg
   = PlaySound String
@@ -140,11 +139,11 @@ update msg model =
           , ("is_active", JE.bool updated_cell.is_active)
           , ("id",        JE.int updated_cell.id)])
 
-        push' =
+        push_ =
           Phoenix.Push.init "update_cell" (jamChannelName ++ model.jam_id)
           |> Phoenix.Push.withPayload payload
         tracks = (toggleCells model.tracks updated_cell)
-        (phxSocket, phxCmd) = Phoenix.Socket.push push' model.phxSocket
+        (phxSocket, phxCmd) = Phoenix.Socket.push push_ model.phxSocket
       in
         ({ model | tracks = tracks, phxSocket = phxSocket }, Cmd.map PhoenixMsg phxCmd)
     ReceiveMetronomeTick raw ->
@@ -159,10 +158,10 @@ update msg model =
     SendBpmUpdate bpm ->
       let
         payload = (JE.object [ ("bpm",  JE.int bpm)])
-        push' =
+        push_ =
           Phoenix.Push.init "update_bpm" (jamChannelName ++ model.jam_id)
           |> Phoenix.Push.withPayload payload
-        (phxSocket, phxCmd) = Phoenix.Socket.push push' model.phxSocket
+        (phxSocket, phxCmd) = Phoenix.Socket.push push_ model.phxSocket
       in
         ({ model | phxSocket = phxSocket }, Cmd.map PhoenixMsg phxCmd)
     PlaySound file ->
@@ -264,7 +263,7 @@ stepEditor model =
 
 stepEditorTableHeader : Model -> Html Msg
 stepEditorTableHeader model =
-  [1..model.total_beats]
+  List.range 1 model.total_beats
   |> List.map (\beat_id -> th [] [ text (toString beat_id) ])
   |> List.append [th [] []]
   |> tr []

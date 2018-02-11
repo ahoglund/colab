@@ -1,2 +1,2 @@
 <%= @lab.name %>
-<div id="app-container"></div>
+<div id="app-container" data-lab-id="<%= @lab.id %>"></div>
