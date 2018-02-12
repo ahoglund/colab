@@ -16,7 +16,7 @@ defmodule Colab.Metronome do
 
   def handle_info(:tick, %{lab_id: lab_id, tick: tick, bpm: bpm}) do
     Process.send_after(self, :tick, calculate(tick,bpm))
-    ColabWeb.Endpoint.broadcast_from! self(), "lab:room:#{lab_id}",
+    ColabWeb.Endpoint.broadcast_from! self, "lab:room:#{lab_id}",
       "metronome_tick", %{lab_id: lab_id, tick: tick, bpm: bpm}
     {:noreply, %{lab_id: lab_id, tick: tick + 1, bpm: bpm}}
   end
