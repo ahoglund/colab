@@ -1,6 +1,7 @@
-<h1>My Labs</h1>
+<%= link "New Lab", to: lab_path(@conn, :new), class: "btn btn-primary" %>
+<h3>My Labs</h3>
 <%= for lab <- @labs do %>
-  <p><%= lab.name %></p>
+  <p><%= link lab.name, to: lab_path(@conn, :show, lab) %></p>
 <% end %>
 
 
