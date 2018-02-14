@@ -10,12 +10,12 @@ defmodule Colab.Metronome do
   end
 
   def init(%{lab_id: lab_id, tick: tick, bpm: bpm}) do
-    Process.send_after(self, :tick, calculate(tick,bpm))
+    Process.send_after(self, :tick, calculate(tick, bpm))
     {:ok, %{lab_id: lab_id, tick: tick + 1, bpm: bpm}}
   end
 
   def handle_info(:tick, %{lab_id: lab_id, tick: tick, bpm: bpm}) do
-    Process.send_after(self, :tick, calculate(tick,bpm))
+    Process.send_after(self, :tick, calculate(tick, bpm))
     ColabWeb.Endpoint.broadcast_from! self, "lab:room:#{lab_id}",
       "metronome_tick", %{lab_id: lab_id, tick: tick, bpm: bpm}
     {:noreply, %{lab_id: lab_id, tick: tick + 1, bpm: bpm}}
@@ -30,8 +30,6 @@ defmodule Colab.Metronome do
   end
 
   defp calculate(_tick, bpm) do
-    60_000
-    |> div(bpm)
-    |> div(4)
+    60_000 |> div(bpm) |> div(4)
   end
 end

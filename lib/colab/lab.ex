@@ -13,7 +13,7 @@ defmodule Colab.Lab do
   """
   def changeset(struct, params \\ %{}) do
     struct
-    |> cast(params, [:name])
-    |> validate_required([:name])
+    |> cast(params, [:name, :creator_id])
+    |> validate_required([:name, :creator_id])
   end
 end

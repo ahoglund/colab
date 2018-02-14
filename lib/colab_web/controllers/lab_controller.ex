@@ -20,7 +20,7 @@ defmodule ColabWeb.LabController do
   end
 
   def create(conn, %{"lab" => lab_params}, user) do
-    changeset = Lab.changeset(%Lab{}, lab_params)
+    changeset = Lab.changeset(%Lab{}, Map.merge(lab_params, %{ "creator_id" => user.id}))
 
     case Repo.insert(changeset) do
       {:ok, lab} ->
@@ -36,7 +36,6 @@ defmodule ColabWeb.LabController do
     labs = Repo.all(user_labs(user))
     render(conn, "index.html", labs: labs)
   end
-
 
   defp user_labs(user) do
     assoc(user, :labs)

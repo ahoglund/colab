@@ -19,10 +19,10 @@ import Keys exposing (Key)
 import Keyboard
 import Char
 
-type alias JamFlags =
-  { jam_id : String }
+type alias LabFlags =
+  { lab_id : String }
 
-main : Program JamFlags Model Msg
+main : Program LabFlags Model Msg
 main =
   Html.programWithFlags
     { init          = init
@@ -39,33 +39,33 @@ type alias Model =
   , is_playing : Bool
   , phxSocket : Phoenix.Socket.Socket Msg
   , bpm : Int
-  , jam_id : String }
+  , lab_id : String }
 
 socketServer : String
 socketServer =
   "ws://localhost:4000/socket/websocket"
 
 initPhxSocket : String -> Phoenix.Socket.Socket Msg
-initPhxSocket jam_id =
+initPhxSocket lab_id =
   Phoenix.Socket.init socketServer
     |> Phoenix.Socket.withDebug
-    |> Phoenix.Socket.on "metronome_tick" (jamChannelName ++ jam_id) ReceiveMetronomeTick
-    |> Phoenix.Socket.on "update_cell" (jamChannelName ++ jam_id) ReceiveUpdatedCell
-    |> Phoenix.Socket.on "update_bpm" (jamChannelName ++ jam_id) ReceiveUpdatedBpm
+    |> Phoenix.Socket.on "metronome_tick" (labChannelName ++ lab_id) ReceiveMetronomeTick
+    |> Phoenix.Socket.on "update_cell" (labChannelName ++ lab_id) ReceiveUpdatedCell
+    |> Phoenix.Socket.on "update_bpm" (labChannelName ++ lab_id) ReceiveUpdatedBpm
 
-initModel : JamFlags -> List Track -> Model
-initModel jamFlags tracks =
+initModel : LabFlags -> List Track -> Model
+initModel labFlags tracks =
   { tracks = tracks
   , total_beats = List.length beatCount
   , is_playing = False
-  , phxSocket = (initPhxSocket jamFlags.jam_id)
-  , jam_id = jamFlags.jam_id
+  , phxSocket = (initPhxSocket labFlags.lab_id)
+  , lab_id = labFlags.lab_id
   , bpm = 120
   , current_key = Nothing
   , current_beat = Nothing }
 
-jamChannelName : String
-jamChannelName =
+labChannelName : String
+labChannelName =
   "lab:room:"
 
 beatCount : List Int
@@ -140,7 +140,7 @@ update msg model =
           , ("id",        JE.int updated_cell.id)])
 
         push_ =
-          Phoenix.Push.init "update_cell" (jamChannelName ++ model.jam_id)
+          Phoenix.Push.init "update_cell" (labChannelName ++ model.lab_id)
           |> Phoenix.Push.withPayload payload
         tracks = (toggleCells model.tracks updated_cell)
         (phxSocket, phxCmd) = Phoenix.Socket.push push_ model.phxSocket
@@ -159,7 +159,7 @@ update msg model =
       let
         payload = (JE.object [ ("bpm",  JE.int bpm)])
         push_ =
-          Phoenix.Push.init "update_bpm" (jamChannelName ++ model.jam_id)
+          Phoenix.Push.init "update_bpm" (labChannelName ++ model.lab_id)
           |> Phoenix.Push.withPayload payload
         (phxSocket, phxCmd) = Phoenix.Socket.push push_ model.phxSocket
       in
@@ -174,7 +174,7 @@ update msg model =
           ({model | current_key = maybeKey}, Cmds.playSynth(Keys.toFrequency maybeKey))
     LeaveChannel ->
       let
-        (phxSocket, phxCmd) = Phoenix.Socket.leave (jamChannelName ++ model.jam_id) model.phxSocket
+        (phxSocket, phxCmd) = Phoenix.Socket.leave (labChannelName ++ model.lab_id) model.phxSocket
       in
         ({ model | phxSocket = phxSocket }
         , Cmd.map PhoenixMsg phxCmd
@@ -372,11 +372,11 @@ base_key_up maybeKey =
         Sub.none
       Just key ->
         Keyboard.ups (onKeyUp key)
-init : JamFlags -> (Model, Cmd Msg)
-init jamFlags =
+init : LabFlags -> (Model, Cmd Msg)
+init labFlags =
   let
-    model = initModel jamFlags (defaultTracks beatCount)
-    channel = Phoenix.Channel.init (jamChannelName ++ model.jam_id)
+    model = initModel labFlags (defaultTracks beatCount)
+    channel = Phoenix.Channel.init (labChannelName ++ model.lab_id)
     (phxSocket, phxCmd) = Phoenix.Socket.join channel model.phxSocket
   in
     ({ model | phxSocket = phxSocket } , Cmd.map PhoenixMsg phxCmd)

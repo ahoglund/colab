@@ -10595,14 +10595,14 @@ var _user$project$Main$decodeCell = A4(
 	A2(_elm_lang$core$Json_Decode$field, 'id', _elm_lang$core$Json_Decode$int));
 var _user$project$Main$decodeBpm = A2(_elm_lang$core$Json_Decode$field, 'bpm', _elm_lang$core$Json_Decode$int);
 var _user$project$Main$beatCount = A2(_elm_lang$core$List$range, 1, 16);
-var _user$project$Main$jamChannelName = 'lab:room:';
+var _user$project$Main$labChannelName = 'lab:room:';
 var _user$project$Main$socketServer = 'ws://localhost:4000/socket/websocket';
-var _user$project$Main$JamFlags = function (a) {
-	return {jam_id: a};
+var _user$project$Main$LabFlags = function (a) {
+	return {lab_id: a};
 };
 var _user$project$Main$Model = F8(
 	function (a, b, c, d, e, f, g, h) {
-		return {tracks: a, total_beats: b, current_beat: c, current_key: d, is_playing: e, phxSocket: f, bpm: g, jam_id: h};
+		return {tracks: a, total_beats: b, current_beat: c, current_key: d, is_playing: e, phxSocket: f, bpm: g, lab_id: h};
 	});
 var _user$project$Main$Metronome = function (a) {
 	return {tick: a};
@@ -10748,33 +10748,33 @@ var _user$project$Main$ReceiveUpdatedCell = function (a) {
 var _user$project$Main$ReceiveMetronomeTick = function (a) {
 	return {ctor: 'ReceiveMetronomeTick', _0: a};
 };
-var _user$project$Main$initPhxSocket = function (jam_id) {
+var _user$project$Main$initPhxSocket = function (lab_id) {
 	return A4(
 		_fbonetti$elm_phoenix_socket$Phoenix_Socket$on,
 		'update_bpm',
-		A2(_elm_lang$core$Basics_ops['++'], _user$project$Main$jamChannelName, jam_id),
+		A2(_elm_lang$core$Basics_ops['++'], _user$project$Main$labChannelName, lab_id),
 		_user$project$Main$ReceiveUpdatedBpm,
 		A4(
 			_fbonetti$elm_phoenix_socket$Phoenix_Socket$on,
 			'update_cell',
-			A2(_elm_lang$core$Basics_ops['++'], _user$project$Main$jamChannelName, jam_id),
+			A2(_elm_lang$core$Basics_ops['++'], _user$project$Main$labChannelName, lab_id),
 			_user$project$Main$ReceiveUpdatedCell,
 			A4(
 				_fbonetti$elm_phoenix_socket$Phoenix_Socket$on,
 				'metronome_tick',
-				A2(_elm_lang$core$Basics_ops['++'], _user$project$Main$jamChannelName, jam_id),
+				A2(_elm_lang$core$Basics_ops['++'], _user$project$Main$labChannelName, lab_id),
 				_user$project$Main$ReceiveMetronomeTick,
 				_fbonetti$elm_phoenix_socket$Phoenix_Socket$withDebug(
 					_fbonetti$elm_phoenix_socket$Phoenix_Socket$init(_user$project$Main$socketServer)))));
 };
 var _user$project$Main$initModel = F2(
-	function (jamFlags, tracks) {
+	function (labFlags, tracks) {
 		return {
 			tracks: tracks,
 			total_beats: _elm_lang$core$List$length(_user$project$Main$beatCount),
 			is_playing: false,
-			phxSocket: _user$project$Main$initPhxSocket(jamFlags.jam_id),
-			jam_id: jamFlags.jam_id,
+			phxSocket: _user$project$Main$initPhxSocket(labFlags.lab_id),
+			lab_id: labFlags.lab_id,
 			bpm: 120,
 			current_key: _elm_lang$core$Maybe$Nothing,
 			current_beat: _elm_lang$core$Maybe$Nothing
@@ -10863,7 +10863,7 @@ var _user$project$Main$update = F2(
 					A2(
 						_fbonetti$elm_phoenix_socket$Phoenix_Push$init,
 						'update_cell',
-						A2(_elm_lang$core$Basics_ops['++'], _user$project$Main$jamChannelName, model.jam_id)));
+						A2(_elm_lang$core$Basics_ops['++'], _user$project$Main$labChannelName, model.lab_id)));
 				var _p8 = A2(_fbonetti$elm_phoenix_socket$Phoenix_Socket$push, push_, model.phxSocket);
 				var phxSocket = _p8._0;
 				var phxCmd = _p8._1;
@@ -10906,7 +10906,7 @@ var _user$project$Main$update = F2(
 					A2(
 						_fbonetti$elm_phoenix_socket$Phoenix_Push$init,
 						'update_bpm',
-						A2(_elm_lang$core$Basics_ops['++'], _user$project$Main$jamChannelName, model.jam_id)));
+						A2(_elm_lang$core$Basics_ops['++'], _user$project$Main$labChannelName, model.lab_id)));
 				var _p11 = A2(_fbonetti$elm_phoenix_socket$Phoenix_Socket$push, push_, model.phxSocket);
 				var phxSocket = _p11._0;
 				var phxCmd = _p11._1;
@@ -10947,7 +10947,7 @@ var _user$project$Main$update = F2(
 			case 'LeaveChannel':
 				var _p14 = A2(
 					_fbonetti$elm_phoenix_socket$Phoenix_Socket$leave,
-					A2(_elm_lang$core$Basics_ops['++'], _user$project$Main$jamChannelName, model.jam_id),
+					A2(_elm_lang$core$Basics_ops['++'], _user$project$Main$labChannelName, model.lab_id),
 					model.phxSocket);
 				var phxSocket = _p14._0;
 				var phxCmd = _p14._1;
@@ -10985,13 +10985,13 @@ var _user$project$Main$update = F2(
 				};
 		}
 	});
-var _user$project$Main$init = function (jamFlags) {
+var _user$project$Main$init = function (labFlags) {
 	var model = A2(
 		_user$project$Main$initModel,
-		jamFlags,
+		labFlags,
 		_user$project$Track$defaultTracks(_user$project$Main$beatCount));
 	var channel = _fbonetti$elm_phoenix_socket$Phoenix_Channel$init(
-		A2(_elm_lang$core$Basics_ops['++'], _user$project$Main$jamChannelName, model.jam_id));
+		A2(_elm_lang$core$Basics_ops['++'], _user$project$Main$labChannelName, model.lab_id));
 	var _p15 = A2(_fbonetti$elm_phoenix_socket$Phoenix_Socket$join, channel, model.phxSocket);
 	var phxSocket = _p15._0;
 	var phxCmd = _p15._1;
@@ -11269,11 +11269,11 @@ var _user$project$Main$main = _elm_lang$html$Html$programWithFlags(
 	{init: _user$project$Main$init, subscriptions: _user$project$Main$subscriptions, update: _user$project$Main$update, view: _user$project$Main$view})(
 	A2(
 		_elm_lang$core$Json_Decode$andThen,
-		function (jam_id) {
+		function (lab_id) {
 			return _elm_lang$core$Json_Decode$succeed(
-				{jam_id: jam_id});
+				{lab_id: lab_id});
 		},
-		A2(_elm_lang$core$Json_Decode$field, 'jam_id', _elm_lang$core$Json_Decode$string)));
+		A2(_elm_lang$core$Json_Decode$field, 'lab_id', _elm_lang$core$Json_Decode$string)));
 
 var Elm = {};
 Elm['Main'] = Elm['Main'] || {};
