@@ -1,2 +1,20 @@
 <%= @lab.name %>
-<div id="app-container" data-lab-id="<%= @lab.id %>"></div>
+<div id="app-container" data-lab-id="<%= @lab.id %>">
+  <div id="lab-bpm"></div>
+  <div id="lab-rack-1">
+    <div id="lab-rack-1-sequencer"></div>
+    <div id="lab-rack-1-keyboard"></div>
+  </div>
+  <div id="lab-rack-2">
+    <div id="lab-rack-2-sequencer"></div>
+    <div id="lab-rack-2-keyboard"></div>
+  </div>
+  <div id="lab-rack-3">
+    <div id="lab-rack-3-sequencer"></div>
+    <div id="lab-rack-3-keyboard"></div>
+  </div>
+  <div id="lab-rack-4">
+    <div id="lab-rack-4-sequencer"></div>
+    <div id="lab-rack-4-keyboard"></div>
+  </div>
+</div>

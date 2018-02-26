@@ -3,8 +3,6 @@ defmodule Colab.PageControllerTest do
 
   test "GET /", %{conn: conn} do
     conn = get conn, "/"
-    assert html_response(conn, 200) =~ "Welcome to CoLab"
-
     assert String.contains?(conn.resp_body, "Login")
     assert String.contains?(conn.resp_body, "Register")
     refute String.contains?(conn.resp_body, "Log Out")

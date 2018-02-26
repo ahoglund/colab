@@ -62,7 +62,7 @@ defmodule Colab.AuthTest do
   end
 
   test "login_by_username_and_pass passes with correct creds", %{conn: conn} do
-    user = insert_user
+    user = insert_user()
     {:ok, conn } =
       conn
       |> Auth.login_by_username_and_pass(user.username, user.password, repo: Repo)
@@ -76,7 +76,7 @@ defmodule Colab.AuthTest do
   end
 
   test "login_by_username_and_pass halts if wrong password", %{conn: conn} do
-    user = insert_user
+    user = insert_user()
     assert {:error, :unauthorized, _conn } =
       Auth.login_by_username_and_pass(conn, user.username, "badpass", repo: Repo)
   end

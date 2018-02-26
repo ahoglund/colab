@@ -14,6 +14,7 @@ defmodule Colab do
       supervisor(ColabWeb.Endpoint, []),
       # Start your own worker by calling: Colab.Worker.start_link(arg1, arg2, arg3)
       # worker(Colab.Worker, [arg1, arg2, arg3]),
+      supervisor(ColabWeb.LabPresence, []),
     ]
 
     # See http://elixir-lang.org/docs/stable/elixir/Supervisor.html

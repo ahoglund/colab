@@ -3,6 +3,8 @@ defmodule ColabWeb.LabChannel do
 
   def join("lab:room:" <> lab_id, _message, socket) do
     Colab.Metronome.start_link(lab_id)
+    socket = assign(socket, :lab_id, String.to_integer(lab_id))
+    #assign(socket, :user_id, user_id)
     {:ok, assign(socket, :lab_id, String.to_integer(lab_id))}
   end
 
@@ -15,5 +17,8 @@ defmodule ColabWeb.LabChannel do
     GenServer.cast({:global, "lab_#{socket.assigns[:lab_id]}_metronome"}, {:set_bpm, bpm})
     broadcast! socket, "update_bpm", %{bpm: bpm}
     {:noreply, socket}
+  end
+
+  def handle_info(:after_join, socket) do
   end
 end

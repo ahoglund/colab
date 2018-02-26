@@ -38,14 +38,13 @@ defmodule Colab.Auth do
       user ->
         {:error, :unauthorized, conn}
       true ->
-        dummy_checkpw
+        dummy_checkpw()
         {:error, :unauthorized, conn}
     end
   end
 
   import Phoenix.Controller
   alias ColabWeb.Router.Helpers
-
 
   def authenticate_user(conn, _opts) do
     if conn.assigns.current_user do
@@ -54,6 +53,17 @@ defmodule Colab.Auth do
       conn
       |> put_flash(:error, "You must be logged in to view that page")
       |> redirect(to: Helpers.page_path(conn, :index))
+      |> halt()
+    end
+  end
+
+  def authorized_user(conn, _opts) do
+    if conn.assigns.current_user.id == String.to_integer(conn.params["id"]) do
+      conn
+    else
+      conn
+      |> put_flash(:error, "Unauthorized to view that page")
+      |> redirect(to: Helpers.user_path(conn, :show, conn.assigns.current_user))
       |> halt()
     end
   end

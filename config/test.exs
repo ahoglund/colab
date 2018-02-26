@@ -12,7 +12,7 @@ config :logger, level: :warn
 # Configure your database
 config :colab, Colab.Repo,
   adapter: Ecto.Adapters.Postgres,
-  username: "drew",
+  username: "postgres",
   password: "postgres",
   database: "colab_test",
   hostname: "localhost",

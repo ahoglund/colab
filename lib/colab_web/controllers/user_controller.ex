@@ -3,21 +3,10 @@ defmodule ColabWeb.UserController do
   alias Colab.User
 
   plug :authenticate_user when action in [:index, :show]
-
-  def authorized_user(conn, user) do
-    if conn.assigns.current_user == user do
-      conn
-    else
-      conn
-      |> put_flash(:error, "Unauthorized to view that page")
-      |> redirect(to: user_path(conn, :show, conn.assigns.current_user))
-      |> halt()
-    end
-  end
+  plug :authorized_user when action in [:show]
 
   def show(conn, %{"id" => id}) do
     user = Repo.get(User, id)
-    authorized_user(conn, user)
     render conn, "show.html", user: user
   end
 

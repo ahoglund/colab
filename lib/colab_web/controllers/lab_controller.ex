@@ -6,15 +6,15 @@ defmodule ColabWeb.LabController do
 
   def action(conn, _) do
     apply(__MODULE__, action_name(conn),
-          [conn, conn.params, conn.assigns.current_user])
+      [conn, conn.params, conn.assigns.current_user])
   end
 
-  def show(conn, %{"id" => id}, user) do
+  def show(conn, %{"id" => id}, _user) do
     lab = Repo.get!(Lab, id)
     render(conn, "show.html", lab: lab)
   end
 
-  def new(conn, _, user) do
+  def new(conn, _, _user) do
     lab = Lab.changeset(%Lab{})
     render conn, "new.html", lab: lab
   end

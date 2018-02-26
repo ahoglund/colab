@@ -3,7 +3,7 @@ defmodule Colab.LabTest do
 
   alias Colab.Lab
 
-  @valid_attrs %{name: "some content"}
+  @valid_attrs %{name: "some content", creator_id: 1}
   @invalid_attrs %{}
 
   test "changeset with valid attributes" do

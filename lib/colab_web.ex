@@ -34,7 +34,7 @@ defmodule ColabWeb do
       import Ecto
       import Ecto.Query
 
-      import Colab.Auth, only: [authenticate_user: 2]
+      import Colab.Auth, only: [authenticate_user: 2, authorized_user: 2]
       import ColabWeb.Router.Helpers
       import ColabWeb.Gettext
     end
