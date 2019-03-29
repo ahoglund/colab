@@ -4,10 +4,6 @@ defmodule ColabWeb.UserSocket do
   ## Channels
   channel "lab:room:*", ColabWeb.LabChannel
 
-  ## Transports
-  transport :websocket, Phoenix.Transports.WebSocket
-  # transport :longpoll, Phoenix.Transports.LongPoll
-
   def connect(_params, socket) do
     {:ok, socket}
   end

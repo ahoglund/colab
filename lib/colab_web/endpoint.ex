@@ -1,7 +1,9 @@
 defmodule ColabWeb.Endpoint do
   use Phoenix.Endpoint, otp_app: :colab
 
-  socket "/socket", ColabWeb.UserSocket
+  socket "/socket", ColabWeb.UserSocket, websocket: true # or list of options
+
+  socket "/live", Phoenix.LiveView.Socket
 
   # Serve at "/" the static files from "priv/static" directory.
   #
@@ -25,7 +27,7 @@ defmodule ColabWeb.Endpoint do
   plug Plug.Parsers,
     parsers: [:urlencoded, :multipart, :json],
     pass: ["*/*"],
-    json_decoder: Poison
+    json_decoder: Jason
 
   plug Plug.MethodOverride
   plug Plug.Head

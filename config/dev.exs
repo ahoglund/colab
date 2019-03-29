@@ -22,16 +22,23 @@ config :colab, ColabWeb.Endpoint,
       ~r{priv/static/.*(js|css|png|jpeg|jpg|gif|svg)$},
       ~r{priv/gettext/.*(po)$},
       ~r{lib/colab_web/views/.*(ex)$},
-      ~r{lib/colab_web/templates/.*(eex)$}
+      ~r{lib/colab_web/templates/.*(eex)$},
+      ~r{lib/colab_web/live/.*(ex)$}
     ]
   ]
 
+config :colab, ColabWeb.Endpoint,
+  live_view: [
+    signing_salt: "uWzX7ur0bafrmJBt3cGfV4GY0BTKWwnXumok3BrS4gMwuZBtV7sWSELlDTsm9Tpg"
+  ]
 # Do not include metadata nor timestamps in development logs
 config :logger, :console, format: "[$level] $message\n"
 
 # Set a higher stacktrace during development. Avoid configuring such
 # in production as building large stacktraces may be expensive.
 config :phoenix, :stacktrace_depth, 20
+
+config :phoenix, template_engines: [leex: Phoenix.LiveView.Engine]
 
 # Configure your database
 config :colab, Colab.Repo,

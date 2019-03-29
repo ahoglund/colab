@@ -8,6 +8,8 @@ defmodule ColabWeb.Router do
     plug :protect_from_forgery
     plug :put_secure_browser_headers
     plug Colab.Auth, repo: Colab.Repo
+    plug :fetch_flash
+    plug Phoenix.LiveView.Flash
   end
 
   pipeline :api do

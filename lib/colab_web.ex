@@ -53,6 +53,7 @@ defmodule ColabWeb do
       import ColabWeb.Router.Helpers
       import ColabWeb.ErrorHelpers
       import ColabWeb.Gettext
+      import Phoenix.LiveView, only: [live_render: 2, live_render: 3]
     end
   end
 
@@ -60,6 +61,7 @@ defmodule ColabWeb do
     quote do
       use Phoenix.Router
       import Colab.Auth, only: [authenticate_user: 2]
+      import Phoenix.LiveView.Router
     end
   end
 

@@ -19,6 +19,6 @@ defmodule ColabWeb.LabChannel do
     {:noreply, socket}
   end
 
-  def handle_info(:after_join, socket) do
-  end
+  # def handle_info(:after_join, socket) do
+  # end
 end
