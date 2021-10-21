@@ -32,3 +32,4 @@ colab-*.tar
 npm-debug.log
 /assets/node_modules/
 
+tags*
